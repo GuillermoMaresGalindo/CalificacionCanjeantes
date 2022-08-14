@@ -1,6 +1,4 @@
 import streamlit as st
-
-
 def check_password():
     """Returns `True` if the user had a correct password."""
 
@@ -36,8 +34,11 @@ def check_password():
         # Password correct.
         return True
 
-if check_password():
-    st.write("Here goes your normal Streamlit app...")
+def new_func():
     x = st.slider('Select a value')
+    return x
+
+if check_password():
+    x = new_func()
     st.write(x, 'squared is', x * x)
     st.button("Click me")
