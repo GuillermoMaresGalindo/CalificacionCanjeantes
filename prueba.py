@@ -1,40 +1,21 @@
 import streamlit as st
+import streamlit_authenticator as stauth
 
-def check_password():
-    """Returns `True` if the user had a correct password."""
+names = ['John Smith','Rebecca Briggs']
+usernames = ['jsmith','rbriggs']
+passwords = ['123','456']
 
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if (
-            st.session_state["username"] in st.secrets["passwords"]
-            and st.session_state["password"]
-            == st.secrets["passwords"][st.session_state["username"]]
-        ):
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store username + password
-            del st.session_state["username"]
-        else:
-            st.session_state["password_correct"] = False
+hashed_passwords = stauth.hasher(passwords).generate()
 
-    if "password_correct" not in st.session_state:
-        # First run, show inputs for username + password.
-        st.text_input("Username", on_change=password_entered, key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        return False
-    elif not st.session_state["password_correct"]:
-        # Password not correct, show input + error.
-        st.text_input("Username", on_change=password_entered, key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        st.error("😕 User not known or password incorrect")
-        return False
-    else:
-        # Password correct.
-        return True
+authenticator = stauth.authenticate(names,usernames,hashed_passwords,
+    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
 
-if check_password():
-    st.write("Here goes your normal Streamlit app...")
-    st.button("Click me")
+name, authentication_status = authenticator.login('Login','main')
+
+if authentication_status:
+    st.write('Welcome *%s*' % (name))
+    st.title('Some content')
+elif authentication_status == False:
+    st.error('Username/password is incorrect')
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
