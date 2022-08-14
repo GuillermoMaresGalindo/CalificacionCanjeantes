@@ -12,12 +12,7 @@ if authentication_status:
  st.write("Welcome *%s*" % (name))
  x = st.slider('Select a value')
  st.write(x, 'squared is', x * x)
- st.button("Click me")
 elif authentication_status == False:
  st.error("Username/password is incorrect")
 elif authentication_status == None:
  st.warning("Please enter your username and password")
-
-
-
-
