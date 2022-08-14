@@ -1,21 +1,29 @@
+import pandas as pd
 import streamlit as st
 import streamlit_authenticator as stauth
-
-names = ['John Smith','Rebecca Briggs']
-usernames = ['jsmith','rbriggs']
-passwords = ['123','456']
-
+ 
+names = ['Lewandowski','Hanafi Harron']
+usernames = ['lewan','hanafi']
+passwords = ['mth107','mth108']
+ 
 hashed_passwords = stauth.hasher(passwords).generate()
-
 authenticator = stauth.authenticate(names,usernames,hashed_passwords,
-    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
-
+'AdLeS_cookie','AdLeS_key',cookie_expiry_days=30)
+ 
 name, authentication_status = authenticator.login('Login','main')
-
+ 
 if authentication_status:
-    st.write('Welcome *%s*' % (name))
-    st.title('Some content')
+  st.title('Welcome *%s* to Pakistan' % (name))
+  st.write("Our first Streamlit App")
+ 
+  st.write(
+    pd.DataFrame({
+      'A': [1, 2, 3, 4],
+      'B': [5, 6, 7, 8]
+        })
+     )
+ 
 elif authentication_status == False:
-    st.error('Username/password is incorrect')
+  st.error('Username/password is incorrect')
 elif authentication_status == None:
-    st.warning('Please enter your username and password')
+  st.warning('Please enter your username and password')
