@@ -36,5 +36,5 @@ def check_password():
         return True
 
 if check_password():
-    x = st.slider('Select a value')
-    st.write(x, 'squared is', x * x)
+    st.write("Here goes your normal Streamlit app...")
+    st.button("Click me")
